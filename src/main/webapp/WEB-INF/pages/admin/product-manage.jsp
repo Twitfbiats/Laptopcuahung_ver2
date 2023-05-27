@@ -30,7 +30,7 @@
 				</c:forEach>
 			</select> -->
 
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+			<button type="button" class="btn btn-primary" id="add-laptop">
 			Laptop	
 			</button>
 		</div>
@@ -119,52 +119,50 @@
 					<div class="container">
 						<div class="row" hidden="hidden">
 						<div class="col-md-2 col-lg-2"><label for="productId">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="productId" value="1" class="tooltip-test" title="OK"/></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="productId" class="tooltip-test" title="OK"/></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="id" value="1" class="tooltip-test" title="OK" disabled/></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="id" class="tooltip-test" title="OK" disabled/></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="name">Name</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="name" value="Acer Nitro 5" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="name" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="size">Size</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="size" value="350x250x24.5" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="size" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="weight">Weight</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="weight" value="2.5" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="weight" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="ramSlot">Ram Slot</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ramSlot" value="2" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="ramSlot" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="driveSlot">Drive Slot</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="driveSlot" value="2" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="driveSlot"/></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="color">Color</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="color" value="BLACK" /></div>
-						<div class="col-md-5 col-lg-5"></div>
+						<div class="col-md-5 col-lg-5"><div><label>Choose </label><select class="custom-select" id="color_select"></select></div></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="material">Material</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="material" value="PLASTIC" /></div>
-						<div class="col-md-5 col-lg-5"></div>
+						<div class="col-md-5 col-lg-5"><div><label>Choose </label><select class="custom-select" id="material_select"></select></div></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="price">Price</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="price" value="1000000000" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="price" placeholder="1000000000" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
@@ -199,32 +197,32 @@
 						<div class="row header"><h2>CPUs</h2></div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="cpu-id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-id" value="1" disabled/></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-id" disabled/></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="cpu-model">Model</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-model" value="AMD Ryzen™ 5 5600X" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-model" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="cpu-core">Core</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-core" value="6" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-core" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="cpu-thread">Thread</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-thread" value="6" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-thread" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="cpu-processorSpeed">Processor Speed</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-processorSpeed" value="3.0" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-processorSpeed" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="cpu-maxProcessorSpeed">Max Processor Speed</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-maxProcessorSpeed" value="4.0" /></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-maxProcessorSpeed" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
@@ -232,14 +230,23 @@
 						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-additionalInfo" value="" /></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
-						<div class="row">
+						<div class="row" hidden>
 						<div class="col-md-2 col-lg-2"><label for="cpu-manufacturer-id">Manufacturer ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-manufacturer-id" value="1" disabled/></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-manufacturer-id" disabled/></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="cpu-manufacturer">Manufacturer</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-manufacturer" value="AMD" /></div>
+						<div class="col-md-5 col-lg-5" id="cpu-manufacturer">
+							<input type="text" id="cpu-manufacturer-input" value="AMD" />
+							<select name="manufacturer" id="cpu-manufacturer-select"></select>
+							<div id="cpu-manufacturer-radio-btn">
+								<input type="radio" id="html" name="fav_language" value="create-new">
+								<label for="html">Create New</label><br>
+								<input type="radio" id="css" name="fav_language" value="add-existing">
+								<label for="css">Choose exsiting</label><br>
+							</div>
+						</div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						

@@ -1,6 +1,8 @@
 package com.example.sirTalion.service.impl;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,5 +36,10 @@ public class ManufacturerServiceImpl implements ManufacturerService
     public void deleteById(long id) 
     {
         manufacturerRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Manufacturer> findAll() {
+        return manufacturerRepository.findAll();
     }
 }

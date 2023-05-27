@@ -2,7 +2,13 @@ $(document).ready(function()
 {
     displayPage(1);
     resetPagination();
-    bindDropdownnHandler();
+
+    $('#add-laptop').on('click', function()
+    {
+        $('#exampleModalLong').modal({keyboard: true, backdrop: true});
+        populateSelectBoxes();
+        addRadioButtonsHandler();
+    });
 
     function displayPage(_page)
     {
@@ -36,11 +42,78 @@ $(document).ready(function()
         .catch(err => console.log('Request Failed', err)); // Catch errors
     }
 
+    function populateSelectBoxes()
+    {
+        // handler color selection
+        $('#color_select').empty();
+        fetch('http://localhost:8080/api/laptop/color')
+        // Handle success
+        .then(response => response.json())  // convert to json
+        .then(json => 
+        {
+            for (var i=0;i<json.length;i++)
+			{
+				var option = '<option value="' + json[i] + '">' + json[i] + '</option>'
+				$('#color_select').append(option);
+			}
+        })    //print data to console
+        .catch(err => console.log('Request Failed', err)); // Catch errors
+
+        // handler material selection
+        $('#material_select').empty();
+        fetch('http://localhost:8080/api/laptop/material')
+        // Handle success
+        .then(response => response.json())  // convert to json
+        .then(json => 
+        {
+            for (var i=0;i<json.length;i++)
+			{
+				var option = '<option value="' + json[i] + '">' + json[i] + '</option>'
+				$('#material_select').append(option);
+			}
+        })    //print data to console
+        .catch(err => console.log('Request Failed', err)); // Catch errors
+
+        // handler cpu manufacturer selection
+        $('#cpu-manufacturer-select').empty();
+        fetch('http://localhost:8080/api/manufacturer/get-all-wp')
+        // Handle success
+        .then(response => response.json())  // convert to json
+        .then(json => 
+        {
+            for (var i=0;i<json.length;i++)
+			{
+				var option = '<option value="' + json[i].name + '">' + json[i].name + '</option>'
+				$('#cpu-manufacturer-select').append(option);
+			}
+        })    //print data to console
+        .catch(err => console.log('Request Failed', err)); // Catch errors
+    }
+
+    function addRadioButtonsHandler()
+    {
+        $("#cpu-manufacturer-radio-btn [type='radio']").change(function(event)
+		{
+			var btn = $(this);
+			if (btn.attr('value') == 'create-new')
+			{
+				$('#cpu-manufacturer select').attr('hidden', 'hidden');
+				$('#cpu-manufacturer-input').removeAttr('hidden');
+			}
+			
+			if (btn.attr('value') == 'add-existing')
+			{
+				$('#cpu-manufacturer-input').attr('hidden', 'hidden');
+				$('#cpu-manufacturer select').removeAttr('hidden');
+			}
+		});
+    }
+
     function addUpdateButtonHandler()
     {
         $('.btnUpdate').on('click', function(event) 
         {
-
+            
         });
     }
 

@@ -15,7 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
