@@ -47,7 +47,7 @@ public class Cpu
     // private List<Laptop> laptops;
 
     @ManyToOne
-    @JoinColumn(name = "manufacturer")
+    @JoinColumn(name = "manufacturer", nullable = true)
     private Manufacturer manufacturer;
 
     // @OneToOne(mappedBy = "cpu")

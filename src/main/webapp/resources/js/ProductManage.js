@@ -2,12 +2,14 @@ $(document).ready(function()
 {
     displayPage(1);
     resetPagination();
+    var cpus;
 
     $('#add-laptop').on('click', function()
     {
         $('#exampleModalLong').modal({keyboard: true, backdrop: true});
         populateSelectBoxes();
         addRadioButtonsHandler();
+        addNavHandler();
     });
 
     function displayPage(_page)
@@ -88,6 +90,44 @@ $(document).ready(function()
 			}
         })    //print data to console
         .catch(err => console.log('Request Failed', err)); // Catch errors
+
+        // handler cpu selection
+        $('#cpu-select').empty();
+        fetch('http://localhost:8080/api/cpu/all')
+        // Handle success
+        .then(response => response.json())  // convert to json
+        .then(json => 
+        {
+            for (var i=0;i<json.length;i++)
+			{
+				var option = '<option value="' + json[i].id + '">' + json[i].model + " |core:" + json[i].core + "|thread:" + json[i].thread
+                + "|speed:" + json[i].processorSpeed + "|max_speed:" + json[i].maxProcessorSpeed
+                + '</option>';
+				$('#cpu-select').append(option);
+			}
+            cpus = json;
+
+            $('#cpu-select').change(function()
+            {
+                $("#cpu input").text('');
+                var option = $('#cpu-select option:selected');
+                cpu = cpus.find(cpu => 
+                {
+                    return cpu.id == option.val();
+                });
+                console.log(cpu);
+                $('#cpu #cpu-id').text(cpu.id);
+                $('#cpu #cpu-model').text(cpu.model);
+                $('#cpu #cpu-core').text(cpu.core);
+                $('#cpu #cpu-thread').text(cpu.thread);
+                $('#cpu #cpu-processorSpeed').text(cpu.processorSpeed);
+                $('#cpu #cpu-maxProcessorSpeed').text(cpu.maxProcessorSpeed);
+                $('#cpu #cpu-additionalInfo').text(cpu.additionalInfo);
+                $('#cpu #cpu-manufacturer-id').text(cpu.manufacturer == null ? '' : cpu.manufacturer.id);
+                $('#cpu #cpu-manufacturer-input').text(cpu.manufacturer == null ? '' : cpu.manufacturer.name);
+            });
+        })    //print data to console
+        .catch(err => console.log('Request Failed', err)); // Catch errors
     }
 
     function addRadioButtonsHandler()
@@ -107,6 +147,28 @@ $(document).ready(function()
 				$('#cpu-manufacturer select').removeAttr('hidden');
 			}
 		});
+    }
+
+    function addNavHandler()
+    {
+        $("#cpu-nav a").click(function(event)
+        {
+            var nav = $(event.target);
+            $("#cpu-nav a").removeClass('active');
+            nav.addClass('active');
+            
+            if(nav.attr('id') == 'create-new')
+            {
+                $("#cpu input[id!='cpu-id']").removeAttr('disabled');
+                $("#cpu input").text('');
+            }
+            if(nav.attr('id') == 'add-existing')
+            {
+                $('#cpu input').attr('disabled', 'disabled');
+                $('#cpu-manufacturer select').attr('hidden', 'hidden');
+                $('#cpu-manufacturer-input').removeAttr('hidden');
+            }
+        });
     }
 
     function addUpdateButtonHandler()

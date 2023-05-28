@@ -195,59 +195,70 @@
 						</div>
 						
 						<div class="row header"><h2>CPUs</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-id" disabled/></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-model">Model</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-model" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-core">Core</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-core" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-thread">Thread</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-thread" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-processorSpeed">Processor Speed</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-processorSpeed" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-maxProcessorSpeed">Max Processor Speed</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-maxProcessorSpeed" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-additionalInfo">Additional Info</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-additionalInfo" value="" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row" hidden>
-						<div class="col-md-2 col-lg-2"><label for="cpu-manufacturer-id">Manufacturer ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="cpu-manufacturer-id" disabled/></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="cpu-manufacturer">Manufacturer</label></div>
-						<div class="col-md-5 col-lg-5" id="cpu-manufacturer">
-							<input type="text" id="cpu-manufacturer-input" value="AMD" />
-							<select name="manufacturer" id="cpu-manufacturer-select"></select>
-							<div id="cpu-manufacturer-radio-btn">
-								<input type="radio" id="html" name="fav_language" value="create-new">
-								<label for="html">Create New</label><br>
-								<input type="radio" id="css" name="fav_language" value="add-existing">
-								<label for="css">Choose exsiting</label><br>
+						<div id="cpu">
+							<ul class="nav nav-pills" id="cpu-nav">
+								<li class="nav-item">
+								<a class="nav-link active" aria-current="page" id="create-new">Create New</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="add-existing">Add Existing</a>
+								</li>
+							</ul>
+
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-id">ID</label></div>
+							<div class="col-md-2 col-lg-2"><input type="text" id="cpu-id" disabled/></div>
+							<div class="col-md-3 col-lg-3"><select name="cpu" id="cpu-select"></select></div>
 							</div>
-						</div>
-						<div class="col-md-5 col-lg-5"></div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-model">Model</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="cpu-model" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-core">Core</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="cpu-core" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-thread">Thread</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="cpu-thread" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-processorSpeed">Processor Speed</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="cpu-processorSpeed" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-maxProcessorSpeed">Max Processor Speed</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="cpu-maxProcessorSpeed" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-additionalInfo">Additional Info</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="cpu-additionalInfo" value="" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row" hidden>
+							<div class="col-md-2 col-lg-2"><label for="cpu-manufacturer-id">Manufacturer ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="cpu-manufacturer-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="cpu-manufacturer">Manufacturer</label></div>
+							<div class="col-md-5 col-lg-5" id="cpu-manufacturer">
+								<input type="text" id="cpu-manufacturer-input" value="AMD" hidden/>
+								<select name="manufacturer" id="cpu-manufacturer-select"></select>
+								<div id="cpu-manufacturer-radio-btn">
+									<input type="radio" id="create-new-cpu-manufacturer" name="fav_language" value="create-new">
+									<label for="create-new-cpu-manufacturer">Create New</label><br>
+									<input type="radio" id="add-existing-cpu-manufacturer" name="fav_language" value="add-existing">
+									<label for="add-existing-cpu-manufacturer">Choose exsiting</label><br>
+								</div>
+							</div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
 						</div>
 						
 						<div class="row header"><h2>Display</h2></div>
