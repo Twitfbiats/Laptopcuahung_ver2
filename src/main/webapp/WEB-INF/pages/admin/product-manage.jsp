@@ -196,9 +196,9 @@
 						
 						<div class="row header"><h2>CPUs</h2></div>
 						<div id="cpu">
-							<ul class="nav nav-pills" id="cpu-nav">
+							<ul class="nav nav-pills nav-fill" id="cpu-nav">
 								<li class="nav-item">
-								<a class="nav-link active" aria-current="page" id="create-new">Create New</a>
+								<a class="nav-link" aria-current="page" id="create-new">Create New</a>
 								</li>
 								<li class="nav-item">
 								<a class="nav-link" id="add-existing">Add Existing</a>
@@ -206,9 +206,12 @@
 							</ul>
 
 							<div class="row">
+							<div class="col-md-3 col-lg-3"></div>
+							<div class="col-md-3 col-lg-3"><select name="cpu" id="cpu-select" hidden></select></div>
+							</div>
+							<div class="row">
 							<div class="col-md-2 col-lg-2"><label for="cpu-id">ID</label></div>
 							<div class="col-md-2 col-lg-2"><input type="text" id="cpu-id" disabled/></div>
-							<div class="col-md-3 col-lg-3"><select name="cpu" id="cpu-select"></select></div>
 							</div>
 							<div class="row">
 							<div class="col-md-2 col-lg-2"><label for="cpu-model">Model</label></div>

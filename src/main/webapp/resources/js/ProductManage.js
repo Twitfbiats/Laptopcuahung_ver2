@@ -109,22 +109,21 @@ $(document).ready(function()
 
             $('#cpu-select').change(function()
             {
-                $("#cpu input").text('');
+                $("#cpu input[id!='create-new-cpu-manufacturer'][id!='add-existing-cpu-manufacturer']").val('');
                 var option = $('#cpu-select option:selected');
                 cpu = cpus.find(cpu => 
                 {
                     return cpu.id == option.val();
                 });
-                console.log(cpu);
-                $('#cpu #cpu-id').text(cpu.id);
-                $('#cpu #cpu-model').text(cpu.model);
-                $('#cpu #cpu-core').text(cpu.core);
-                $('#cpu #cpu-thread').text(cpu.thread);
-                $('#cpu #cpu-processorSpeed').text(cpu.processorSpeed);
-                $('#cpu #cpu-maxProcessorSpeed').text(cpu.maxProcessorSpeed);
-                $('#cpu #cpu-additionalInfo').text(cpu.additionalInfo);
-                $('#cpu #cpu-manufacturer-id').text(cpu.manufacturer == null ? '' : cpu.manufacturer.id);
-                $('#cpu #cpu-manufacturer-input').text(cpu.manufacturer == null ? '' : cpu.manufacturer.name);
+                $('#cpu #cpu-id').val(cpu.id + "");
+                $('#cpu #cpu-model').val(cpu.model);
+                $('#cpu #cpu-core').val(cpu.core);
+                $('#cpu #cpu-thread').val(cpu.thread);
+                $('#cpu #cpu-processorSpeed').val(cpu.processorSpeed);
+                $('#cpu #cpu-maxProcessorSpeed').val(cpu.maxProcessorSpeed);
+                $('#cpu #cpu-additionalInfo').val(cpu.additionalInfo);
+                $('#cpu #cpu-manufacturer-id').val(cpu.manufacturer == null ? '' : cpu.manufacturer.id);
+                $('#cpu #cpu-manufacturer-input').val(cpu.manufacturer == null ? '' : cpu.manufacturer.name);
             });
         })    //print data to console
         .catch(err => console.log('Request Failed', err)); // Catch errors
@@ -132,6 +131,7 @@ $(document).ready(function()
 
     function addRadioButtonsHandler()
     {
+        //handle cpu-manufacturer button events
         $("#cpu-manufacturer-radio-btn [type='radio']").change(function(event)
 		{
 			var btn = $(this);
@@ -151,6 +151,7 @@ $(document).ready(function()
 
     function addNavHandler()
     {
+        //handle cpu create new | add existing button events
         $("#cpu-nav a").click(function(event)
         {
             var nav = $(event.target);
@@ -160,13 +161,15 @@ $(document).ready(function()
             if(nav.attr('id') == 'create-new')
             {
                 $("#cpu input[id!='cpu-id']").removeAttr('disabled');
-                $("#cpu input").text('');
+                $("#cpu input[id!='create-new-cpu-manufacturer'][id!='add-existing-cpu-manufacturer']").val('');
+                $('#cpu-select').attr('hidden', 'hidden');
             }
             if(nav.attr('id') == 'add-existing')
             {
                 $('#cpu input').attr('disabled', 'disabled');
                 $('#cpu-manufacturer select').attr('hidden', 'hidden');
                 $('#cpu-manufacturer-input').removeAttr('hidden');
+                $('#cpu-select').removeAttr('hidden');
             }
         });
     }
