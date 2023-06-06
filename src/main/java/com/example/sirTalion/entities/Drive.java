@@ -1,5 +1,6 @@
 package com.example.sirTalion.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -42,7 +43,7 @@ public class Drive
     @Min(value = 0, message = "Drive min read is 0")
     private short maxRead;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "manufacturer")
     private Manufacturer manufacturer;
 }

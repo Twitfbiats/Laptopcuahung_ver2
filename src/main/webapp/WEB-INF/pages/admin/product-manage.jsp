@@ -154,11 +154,11 @@
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="color">Color</label></div>
-						<div class="col-md-5 col-lg-5"><div><label>Choose </label><select class="custom-select" id="color_select"></select></div></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="color" disabled/><select class="custom-select" id="color_select"><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="material">Material</label></div>
-						<div class="col-md-5 col-lg-5"><div><label>Choose </label><select class="custom-select" id="material_select"></select></div></div>
+						<div class="col-md-5 col-lg-5"><input type="text" id="material" disabled/><select class="custom-select" id="material_select"><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="price">Price</label></div>
@@ -182,12 +182,13 @@
 						</div>
 						<div class="row">
 						<div class="col-md-2 col-lg-2"><label for="portInfo">Port Info</label></div>
-						<div class="col-md-5 col-lg-5"><textarea type="text" id="portInfo" title="The Format Is: Number Port Number Port...">1 HDMI</textarea></div>
+						<div class="col-md-5 col-lg-5"><textarea type="text" id="portInfo" placeholder="1 HDMI &#10;1 VGA&#10; 2 USB"></textarea></div>
 						<div class="col-md-5 col-lg-5"></div>
 						</div>
 						<div class="row">
 						<div class="col-md-12 col-lg-12">
-						<form action="http://localhost:8080/api/product/upload/2" method="POST" enctype="multipart/form-data">
+						<iframe name="images-iframe" hidden></iframe>
+						<form action="http://localhost:8080/api/product/upload-images/" method="POST" enctype="multipart/form-data" id="laptop-images" target="images-iframe">
 						<label for="img">Select Images For Product:</label>
 						<input type="file" id="img" name="images" accept="image/*" multiple>
 						</form>
@@ -207,7 +208,7 @@
 
 							<div class="row">
 							<div class="col-md-3 col-lg-3"></div>
-							<div class="col-md-3 col-lg-3"><select name="cpu" id="cpu-select" hidden></select></div>
+							<div class="col-md-3 col-lg-3"><select name="cpu" id="cpu-select" hidden><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
 							</div>
 							<div class="row">
 							<div class="col-md-2 col-lg-2"><label for="cpu-id">ID</label></div>
@@ -251,8 +252,8 @@
 							<div class="row">
 							<div class="col-md-2 col-lg-2"><label for="cpu-manufacturer">Manufacturer</label></div>
 							<div class="col-md-5 col-lg-5" id="cpu-manufacturer">
-								<input type="text" id="cpu-manufacturer-input" value="AMD" hidden/>
-								<select name="manufacturer" id="cpu-manufacturer-select"></select>
+								<input type="text" id="cpu-manufacturer-input" hidden/>
+								<select name="manufacturer" id="cpu-manufacturer-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select>
 								<div id="cpu-manufacturer-radio-btn">
 									<input type="radio" id="create-new-cpu-manufacturer" name="fav_language" value="create-new">
 									<label for="create-new-cpu-manufacturer">Create New</label><br>
@@ -265,220 +266,350 @@
 						</div>
 						
 						<div class="row header"><h2>Display</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="display-id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="display-id" value="1" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="display-size">Size</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="display-size" value="15.4" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="display-technology">Technology</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="display-technology" value="" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="display-resolution">Resolution</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="display-resolution" value="1920x1080" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="display-displayType">Display Type</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="display-displayType" value="LED" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="display-refreshRate">Refresh Rate</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="display-refreshRate" value="0" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="display-panelType">Panel Type</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="display-panelType" value="IPS" /></div>
-						<div class="col-md-5 col-lg-5"></div>
+						<div id="display">
+							<ul class="nav nav-pills nav-fill" id="display-nav">
+								<li class="nav-item">
+								<a class="nav-link" aria-current="page" id="create-new">Create New</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="add-existing">Add Existing</a>
+								</li>
+							</ul>
+
+							<div class="row">
+							<div class="col-md-3 col-lg-3"></div>
+							<div class="col-md-3 col-lg-3"><select name="display" id="display-select" hidden><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="display-id">ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="display-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="display-size">Size</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="display-size" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="display-technology">Technology</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="display-technology" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="display-resolution">Resolution</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="display-resolution" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="display-displayType">Display Type</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="display-displayType" disabled/><select class="custom-select" id="display-type-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="display-refreshRate">Refresh Rate</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="display-refreshRate" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="display-panelType">Panel Type</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="display-panelType" disabled/><select class="custom-select" id="panel-type-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
 						</div>
 
 						<div class="row header"><h2>RAMs</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="ram-id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ram-id" value="1" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="ram-model">Model</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ram-model" value="RAM Kingston HyperX Fury" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="ram-size">Size</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ram-size" value="8" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="ram-ramType">RAM Type</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ram-ramType" value="DDR3" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="ram-bus">Bus</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ram-bus" value="1600" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="ram-manufacturer-id">Manufacturer ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ram-manufacturer-id" value="1" disabled/></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="ram-manufacturer">Manufacturer</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="ram-manufacturer" value="KingSton" /></div>
-						<div class="col-md-5 col-lg-5"></div>
+						<div id="ram">
+							<ul class="nav nav-pills nav-fill" id="ram-nav">
+								<li class="nav-item">
+								<a class="nav-link" aria-current="page" id="create-new">Create New</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="add-existing">Add Existing</a>
+								</li>
+							</ul>
+
+							<div class="row">
+							<div class="col-md-3 col-lg-3"></div>
+							<div class="col-md-3 col-lg-3"><select name="ram" id="ram-select" hidden><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="ram-id">ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="ram-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="ram-model">Model</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="ram-model" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="ram-size">Size</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="ram-size" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="ram-ramType">RAM Type</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="ram-ramType" disabled/><select class="custom-select" id="ram-type-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="ram-bus">Bus</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="ram-bus" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row" hidden>
+							<div class="col-md-2 col-lg-2"><label for="ram-manufacturer-id">Manufacturer ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="ram-manufacturer-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="ram-manufacturer">Manufacturer</label></div>
+							<div class="col-md-5 col-lg-5" id="ram-manufacturer">
+								<input type="text" id="ram-manufacturer-input" hidden/>
+								<select name="manufacturer" id="ram-manufacturer-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select>
+								<div id="ram-manufacturer-radio-btn">
+									<input type="radio" id="create-new-ram-manufacturer" name="fav_language" value="create-new">
+									<label for="create-new-ram-manufacturer">Create New</label><br>
+									<input type="radio" id="add-existing-ram-manufacturer" name="fav_language" value="add-existing">
+									<label for="add-existing-ram-manufacturer">Choose exsiting</label><br>
+								</div>
+							</div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
 						</div>
 
 						<div class="row header"><h2>Drives</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-id" value="1" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-model">Model</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-model" value="SSD Kingston NOW A400" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-size">Size</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-size" value="240" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-driveType">Drive Type</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-driveType" value="SSD" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-maxWrite">Max Write</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-maxWrite" value="0" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-maxRead">Max Read</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-maxRead" value="0" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-manufacturer-id">Manufacturer ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-manufacturer-id" value="1" disabled/></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="drive-manufacturer">Manufacturer</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="drive-manufacturer" value="" /></div>
-						<div class="col-md-5 col-lg-5"></div>
+						<div id="drive">
+							<ul class="nav nav-pills nav-fill" id="drive-nav">
+								<li class="nav-item">
+								<a class="nav-link" aria-current="page" id="create-new">Create New</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="add-existing">Add Existing</a>
+								</li>
+							</ul>
+
+							<div class="row">
+							<div class="col-md-3 col-lg-3"></div>
+							<div class="col-md-3 col-lg-3"><select name="drive" id="drive-select" hidden><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="drive-id">ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="drive-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="drive-model">Model</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="drive-model" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="drive-size">Size</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="drive-size" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="drive-driveType">Drive Type</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="drive-driveType" disabled/><select class="custom-select" id="drive-type-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="drive-maxWrite">Max Write</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="drive-maxWrite" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="drive-maxRead">Max Read</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="drive-maxRead"/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row" hidden>
+							<div class="col-md-2 col-lg-2"><label for="drive-manufacturer-id">Manufacturer ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="drive-manufacturer-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="drive-manufacturer">Manufacturer</label></div>
+							<div class="col-md-5 col-lg-5" id="drive-manufacturer">
+								<input type="text" id="drive-manufacturer-input" hidden/>
+								<select name="manufacturer" id="drive-manufacturer-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select>
+								<div id="drive-manufacturer-radio-btn">
+									<input type="radio" id="create-new-drive-manufacturer" name="fav_language" value="create-new">
+									<label for="create-new-drive-manufacturer">Create New</label><br>
+									<input type="radio" id="add-existing-drive-manufacturer" name="fav_language" value="add-existing">
+									<label for="add-existing-drive-manufacturer">Choose exsiting</label><br>
+								</div>
+							</div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
 						</div>
 						
 						<div class="row header"><h2>Graphic Cards</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="graphicCard-id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="graphicCard-id" value="1" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="graphicCard-model">Model</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="graphicCard-model" value="GeForce GTX 1650" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="graphicCard-memory">Memory</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="graphicCard-memory" value="8" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="graphicCard-graphicCardType">Graphic Card Type</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="graphicCard-graphicCardType" value="Integrated" /></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="graphicCard-manufacturer-id">Manufacturer ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="graphicCard-manufacturer-id" value="1" disabled/></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="graphicCard-manufacturer">Manufacturer</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="graphicCard-manufacturer" value="NVIDIA" /></div>
-						<div class="col-md-5 col-lg-5"></div>
+						<div id="graphic-card">
+							<ul class="nav nav-pills nav-fill" id="graphic-card-nav">
+								<li class="nav-item">
+								<a class="nav-link" aria-current="page" id="create-new">Create New</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="add-existing">Add Existing</a>
+								</li>
+							</ul>
+
+							<div class="row">
+							<div class="col-md-3 col-lg-3"></div>
+							<div class="col-md-3 col-lg-3"><select name="graphic-card" id="graphic-card-select" hidden><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="graphic-card-id">ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="graphic-card-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="graphic-card-model">Model</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="graphic-card-model" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="graphic-card-memory">Memory</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="graphic-card-memory" /></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="graphic-card-type">Graphic Card Type</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="graphic-card-type" disabled/><select class="custom-select" id="graphic-card-type-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row" hidden>
+							<div class="col-md-2 col-lg-2"><label for="graphic-card-manufacturer-id">Manufacturer ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="graphic-card-manufacturer-id" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="graphic-card-manufacturer">Manufacturer</label></div>
+							<div class="col-md-5 col-lg-5" id="graphic-card-manufacturer">
+								<input type="text" id="graphic-card-manufacturer-input" hidden/>
+								<select name="manufacturer" id="graphic-card-manufacturer-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select>
+								<div id="graphic-card-manufacturer-radio-btn">
+									<input type="radio" id="create-new-graphic-card-manufacturer" name="fav_language" value="create-new">
+									<label for="create-new-graphic-card-manufacturer">Create New</label><br>
+									<input type="radio" id="add-existing-graphic-card-manufacturer" name="fav_language" value="add-existing">
+									<label for="add-existing-graphic-card-manufacturer">Choose exsiting</label><br>
+								</div>
+							</div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
 						</div>
 						
 						<div class="row header"><h2>Operating System</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="operatingSystem-id">ID</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="operatingSystem-id" value="1" disabled/></div>
-						<div class="col-md-4 col-lg-4"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="operatingSystem-name">Name</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="operatingSystem-name" value="Windows 11" /></div>
-						<div class="col-md-4 col-lg-4"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="operatingSystem-type">Type</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="operatingSystem-type" value="64" /></div>
-						<div class="col-md-4 col-lg-4"></div>
+						<div id="operating-system">
+							<ul class="nav nav-pills nav-fill" id="operating-system-nav">
+								<li class="nav-item">
+								<a class="nav-link" aria-current="page" id="create-new">Create New</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="add-existing">Add Existing</a>
+								</li>
+							</ul>
+
+							<div class="row">
+							<div class="col-md-3 col-lg-3"></div>
+							<div class="col-md-3 col-lg-3"><select name="operating-system" id="operating-system-select" hidden><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="operating-system-id">ID</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="operating-system-id" disabled/></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="operating-system-name">Name</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="operating-system-name" /></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="operating-system-type">Type</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="operating-system-type" /></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
 						</div>
 
 						<div class="row header"><h2>Battery</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="battery-id">ID</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="battery-id" value="1" /></div>
-						<div class="col-md-4 col-lg-4"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="battery-model">Model</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="battery-model" value="Lithium-ion" /></div>
-						<div class="col-md-4 col-lg-4"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="battery-voltages">Voltages</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="battery-voltages" value="3.6" /></div>
-						<div class="col-md-4 col-lg-4"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="battery-estimatedWorkingTime">Estimated Working Time</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="battery-estimatedWorkingTime" value="0" /></div>
-						<div class="col-md-4 col-lg-4"></div>
+						<div id="battery">
+							<ul class="nav nav-pills nav-fill" id="battery-nav">
+								<li class="nav-item">
+								<a class="nav-link" aria-current="page" id="create-new">Create New</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="add-existing">Add Existing</a>
+								</li>
+							</ul>
+
+							<div class="row">
+							<div class="col-md-3 col-lg-3"></div>
+							<div class="col-md-3 col-lg-3"><select name="battery" id="battery-select" hidden><option class="select-an-option" disabled selected> -- select an option -- </option></select></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="battery-id">ID</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="battery-id" disabled/></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="battery-model">Model</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="battery-model" /></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="battery-voltages">Voltages</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="battery-voltages" /></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="battery-estimatedWorkingTime">Estimated Working Time</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="battery-estimatedWorkingTime" /></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
 						</div>
 
 						<div class="row header"><h2>Manufacturer</h2></div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="manufacturer-id">ID</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="manufacturer-id" value="1" disabled/></div>
-						<div class="col-md-4 col-lg-4"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="manufacturer-name">Name</label></div>
-						<div class="col-md-4 col-lg-4"><input type="text" id="manufacturer-name" value="AMD" /></div>
-						<div class="col-md-4 col-lg-4"></div>
+						<div id="manufacturer">
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="manufacturer-id">ID</label></div>
+							<div class="col-md-4 col-lg-4"><input type="text" id="manufacturer-id" disabled/></div>
+							<div class="col-md-4 col-lg-4"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="product-manufacturer">Manufacturer</label></div>
+							<div class="col-md-5 col-lg-5" id="product-manufacturer">
+								<input type="text" id="manufacturer-input" hidden/>
+								<select name="manufacturer" id="manufacturer-select"><option class="select-an-option" disabled selected> -- select an option -- </option></select>
+								<div id="manufacturer-radio-btn">
+									<input type="radio" id="create-new-manufacturer" name="fav_language" value="create-new">
+									<label for="create-new-manufacturer">Create New</label><br>
+									<input type="radio" id="add-existing-manufacturer" name="fav_language" value="add-existing">
+									<label for="add-existing-manufacturer">Choose exsiting</label><br>
+								</div>
+							</div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
 						</div>
 						
 						<div class="row header"><h2>Category</h2></div>
-						<div class="row" >
-						<div class="col-md-2 col-lg-2"><label for="category-id">ID</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="category-id" value="1" class="tooltip-test" title="OK" disabled/></div>
-						<div class="col-md-5 col-lg-5"></div>
-						</div>
-						<div class="row">
-						<div class="col-md-2 col-lg-2"><label for="category-name">category-name</label></div>
-						<div class="col-md-5 col-lg-5"><input type="text" id="category-name" value="laptop" class="tooltip-test" title="OK" disabled/></div>
-						<div class="col-md-5 col-lg-5"></div>
+						<div id="category">
+							<div class="row" >
+							<div class="col-md-2 col-lg-2"><label for="category-id">ID</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="category-id" value="1" class="tooltip-test" title="OK" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
+							<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="category-name">category-name</label></div>
+							<div class="col-md-5 col-lg-5"><input type="text" id="category-name" value="laptop" class="tooltip-test" title="OK" disabled/></div>
+							<div class="col-md-5 col-lg-5"></div>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-primary btn-save-or-update">Save changes</button>
 				</div>
 			</div>
 		</div>

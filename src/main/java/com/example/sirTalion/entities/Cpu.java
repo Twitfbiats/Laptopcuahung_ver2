@@ -2,6 +2,7 @@
 package com.example.sirTalion.entities;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,7 +47,7 @@ public class Cpu
     // @ManyToMany(mappedBy = "cpus")
     // private List<Laptop> laptops;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "manufacturer", nullable = true)
     private Manufacturer manufacturer;
 

@@ -43,7 +43,7 @@ public class Display
     private DisplayType displayType;
 
     @Min(value = 0, message = "Display min refresh rate is 0") @NotNull(message = "Display refresh rate can't be blank")
-    private byte refreshRate;
+    private short refreshRate;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 15)

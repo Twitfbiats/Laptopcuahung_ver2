@@ -68,50 +68,51 @@ public class Laptop
     @Size(max = 100, message = "Laptop port info should be less than 100 characters")
     private String portInfo;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}
+    , fetch = FetchType.EAGER)
     @JoinTable(name = "laptop_cpu"
     , joinColumns = @JoinColumn(name = "laptop")
     , inverseJoinColumns = @JoinColumn(name = "cpu")
     )
     private List<Cpu> cpus;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "display")
     private Display display;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "laptop_ram"
     , joinColumns = @JoinColumn(name = "laptop")
     , inverseJoinColumns = @JoinColumn(name = "ram")
     )
     private List<Ram> rams;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "laptop_drive"
     , joinColumns = @JoinColumn(name = "laptop")
     , inverseJoinColumns = @JoinColumn(name = "drive")
     )
     private List<Drive> drives;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "laptop_graphicCard"
     , joinColumns = @JoinColumn(name = "laptop")
     , inverseJoinColumns = @JoinColumn(name = "graphicCard")
     )
     private List<GraphicCard> graphicCards;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "operating_system")
     private OperatingSystem operatingSystem;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "battery")
     private Battery battery;
 
     // @OneToOne(mappedBy = "laptop")
     // private Product product;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "manufacturer")
     private Manufacturer manufacturer;
 }

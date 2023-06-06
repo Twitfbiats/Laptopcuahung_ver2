@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,23 +40,23 @@ public class Product
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "laptop")
     private Laptop laptop;
 
-    @OneToOne()
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "cpu")
     private Cpu cpu;
 
-    @OneToOne()
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "ram")
     private Ram ram;
 
-    @OneToOne()
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "drive")
     private Drive drive;
 
-    @OneToOne()
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "graphicCard")
     private GraphicCard graphicCard;
 
@@ -82,7 +83,7 @@ public class Product
     // @OneToMany(mappedBy = "product")
     // private List<CartInfo> cartInfos;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "category_id")
     private Category category;
 

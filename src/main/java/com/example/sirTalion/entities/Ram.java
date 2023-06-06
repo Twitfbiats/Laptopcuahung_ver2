@@ -1,5 +1,6 @@
 package com.example.sirTalion.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,7 +41,7 @@ public class Ram
     @Min(value = 0, message = "Ram min bus is 0")
     private short bus;
 
-    @ManyToOne
-    @JoinColumn(name = "manufacturer")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "manufacturer", nullable = true)
     private Manufacturer manufacturer;
 }
