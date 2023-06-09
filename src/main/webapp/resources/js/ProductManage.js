@@ -26,14 +26,14 @@ $(document).ready(function()
             {
                 category = products[i].category.name;
                 var productRow = '<tr>' +
-                                  '<td>' + '<img src="/img/'+products[i].id+'.png" class="img-responsive" style="height: 50px; width: 50px" />'+'</td>' +
+                                  '<td>' + '<img src="/img/' + products[i].id + '.png" class="img-responsive" style="height: 50px; width: 50px" />'+'</td>' +
                                   '<td>' + products[i].laptop.name + '</td>' +
                                   '<td>' + category + '</td>' +
                                   '<td>' + products[i].laptop.manufacturer.name + '</td>' +
                                   '<td>' + products[i].price + '</td>' +
                                   '<td>' + products[i].stock + '</td>' +
                                   '<td width="0%">'+'<input type="hidden" id="productId" value=' + products[i].id + '>'+ '</td>' + 
-                                  '<td> <button class="btn btn-warning btnDetail" style="margin-right: 6px">Detail</button>' ;
+                                  '<td> <button class="btn btn-warning btnDetail" style="margin-right: 6px" value=' + products[i].id + '>Detail</button>' ;
                 
                 
                 productRow += '<button class="btn btn-primary btnUpdate" >Update</button>';
@@ -41,8 +41,18 @@ $(document).ready(function()
                 $('.productTable tbody').append(productRow);
             }
             addUpdateButtonHandler();
+            addDetailButtonHandler();
         })    
         .catch(err => console.log('Request Failed', err)); // Catch errors
+    }
+
+    function addDetailButtonHandler()
+    {
+        $('.btnDetail').click(function(event)
+        {
+            var id = $(this).val();
+            window.open("http://localhost:8080/product/" + id);
+        });
     }
 
     function populateSelectBoxes()
@@ -928,13 +938,15 @@ $(document).ready(function()
                     const json = await response.json();
                     if (json.ok == "true")
                     {
-                        console.log(json.id);
                         $("#laptop-images").attr("action", "http://localhost:8080/api/product/upload-images/" + json.id)
                         $("#laptop-images").trigger("submit");
+                        $('#exampleModalLong').modal('hide');
+                        alert("Success !");
                     }
                     else
                     {
                         console.log(json);
+                        alert("Error");
                     }
                 })();
                 
