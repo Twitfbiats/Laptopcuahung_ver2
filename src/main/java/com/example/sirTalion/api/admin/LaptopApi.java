@@ -15,7 +15,6 @@ import com.example.sirTalion.entities.enumerate.Color;
 import com.example.sirTalion.entities.enumerate.DisplayType;
 import com.example.sirTalion.entities.enumerate.Material;
 import com.example.sirTalion.entities.enumerate.PanelType;
-import com.example.sirTalion.entities.enumerate.RamType;
 import com.example.sirTalion.repository.BatteryRepository;
 import com.example.sirTalion.repository.DisplayRepository;
 import com.example.sirTalion.repository.OperatingSystemRepository;

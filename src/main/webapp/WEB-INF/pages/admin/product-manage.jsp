@@ -18,6 +18,7 @@
 	<jsp:include page="template/header.jsp"></jsp:include>
 	<jsp:include page="template/sidebar.jsp"></jsp:include>
 	<link rel="stylesheet" href="<c:url value='/Frontend/css/simplePagination.css' />" />
+	<link rel="stylesheet" href="<c:url value='/css/nouislider.css' />" />
 
 	<div class="col-md-9 animated bounce">
 		<h3 class="page-header">Product Management</h3>
@@ -33,12 +34,16 @@
 			<button type="button" class="btn btn-primary" id="add-laptop">
 			Laptop	
 			</button>
+
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+			Add Laptop By Json
+			</button>
 		</div>
 		<hr>
 
 		<form class="form-inline" id="searchForm" name="searchObject">
 			<div class="form-group">
-				<select class="form-control" name="categoryId" id="category">
+				<select class="form-control" name="categoryId" id="query_category">
 					<c:forEach var="category" items="${categories}">
 						<option value="${category.id}">${category.name}</option>
 					</c:forEach>
@@ -46,35 +51,35 @@
 			</div>
 
 			<div class="form-group">
-				<select class="form-control" name="manufacturerId" id="manufacturer">
+				<select class="form-control" name="manufacturerId" id="query_manufacturer">
 					<option value="">All Manufacturer</option>
 					<c:forEach var="manufacturer" items="${manufacturers}">
 						<option value="${manufacturer.id}">${manufacturer.name}</option>
 					</c:forEach>
 				</select>
 			</div>
-
-			<div class="form-group">
-				<select class="form-control" name="donGia" id="price">
-					<option value="">All Price</option>
-					<option value="Under 2 millions">Under 2 millions</option>
-					<option value="2 to 4 millions">2 to 4 millions</option>
-					<option value="4 to 6 millions">4 to 6 millions</option>
-					<option value="6 to 10 millions">6 to 10 millions</option>
-					<option value="Above 10 millions">Above 10 millions</option>
-				</select>
+		</form>
+		<div class="row">
+			<div class="col-md-3 col-lg-3"><label>Choose price range: </label></div>
+			<div class="col-md-9 col-lg-9">
+				<div class="slider-keypress m-b-20"></div>
+				<br>
+				<input type="text" class="input-with-keypress-0">
+				<input type="text" class="input-with-keypress-1">
 			</div>
-
-			<div class="form-group">
-				<select class="form-control" name="sortByPrice">
+		</div>
+		<div class="row">
+			<div class="col-md-2 col-lg-2">
+				<select class="form-control" name="sortByPrice" id="sortByPrice">
 					<option value="asc">Price Up</option>
 					<option value="desc">Price Down</option>
 				</select>
 			</div>
-
-			&nbsp;&nbsp;
-			<button type="button" class="btn btn-primary" id="btnSearchProduct">Search Product</button>
-		</form>
+			<div class="col-md-2 col-lg-2">
+				<button type="button" class="btn btn-primary" id="btnSearchProduct">Search Product</button>
+			</div>
+		</div>
+		<br><br>
 
 		<div class="form-group form-inline"
 			style="float: right; margin-right: 10px; top: -33px; position: relative;"">
@@ -103,6 +108,50 @@
 		</table>
 
 		<div id="light-pagination" class="pagination"></div>
+	</div>
+
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog modal-lg">
+		  <div class="modal-content">
+		  
+			<!-- Modal Header -->
+			<div class="modal-header">
+			  <h4 class="modal-title">Add New Product</h4>
+			  <label style="padding-left: 20px; padding-right: 20px">Enter the number of product: </label>
+			  <input type="text" id="product_total">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			
+			<!-- Modal body -->
+			<div class="modal-body">
+				<div>
+					<iframe name="images-iframe" hidden></iframe>
+					<form action="http://localhost:8080/api/product/save" method="POST" enctype="multipart/form-data"  target="images-iframe">
+						<div class="row">
+							<div class="col-md-2 col-lg-2"><label>Enter New Product</label></div>
+							<div class="col-md-10 col-lg-10"><textarea style="width: 100%;" spellcheck="false" name="product_temp"></textarea></div>
+						</div>
+						<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="img">Select Images For Product: </label></div>
+							<div class="col-md-10 col-lg-10"><input type="file" name="images" accept="image/*" multiple></div>
+						</div>
+						<div class="row">
+							<div class="col-md-2 col-lg-2"><label for="img">Select 360 Images For Product: </label></div>
+							<div class="col-md-10 col-lg-10"><input type="file" name="images360" accept="image/*" multiple></div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="add-product-btn" value="1">Save</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+			
+		  </div>
+		</div>
 	</div>
 
 	<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -616,146 +665,7 @@
 	</div>
 
 
-	<div class="row col-md-6">
-		<form class="otherForm" id="otherForm">
-			<div class="modal fade otherModal" tabindex="-1" role="dialog">
-				<div class="modal-dialog modal-lg" role="document"
-					style="width: 60%;">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel"></h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div>
-									<input type="hidden" class="form-control" name='danhMucId'
-										id="idDanhMucKhac">
-								</div>
-								<div>
-									<input type="hidden" class="form-control" name="id"
-										id="idSanPhamKhac" readonly="true">
-								</div>
-								<div class="form-group col-md-12">
-									<label for="inputPassword4">Tên sản phẩm</label> <input
-										type="text" class="form-control" name="tenSanPham">
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="form-group col-md-6">
-									<label for="inputState">Hãng Sản Xuất</label> <select
-										name="nhaSXId" id="nhaSXIdKhac" class="form-control">
-										<c:forEach var="nhanHieu" items="${listNhanHieu }">
-											<option value="${nhanHieu.id }">${nhanHieu.tenHangSanXuat}
-											</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group col-md-6">
-									<label for="inputPassword4">Đơn giá</label> <input
-										type="number" class="form-control" name="donGia" min="0"
-										value="0" id="donGiaKhac">
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="form-group col-md-12">
-									<label for="inputPassword4">Mô tả chung</label>
-									<textarea class="form-control" id="inputPassword4"
-										placeholder="" rows="2" name="thongTinChung"></textarea>
-								</div>
-							</div>
-							<div class="row">
-								<div class="form-group col-md-6">
-									<label for="inputEmail4">Thông tin bảo hành</label> <input
-										type="text" class="form-control" id="inputEmail4"
-										name="thongTinBaoHanh">
-								</div>
-
-								<div class="form-group col-md-6">
-									<label for="inputPassword4">Số lượng</label> <input
-										type="number" class="form-control" name="donViKho" min="0"
-										value="0">
-								</div>
-							</div>
-							<div>
-								<label for="inputEmail4">Hình ảnh</label> <input type="file"
-									class="form-control" name="hinhAnh">
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default"
-								data-dismiss="modal">Hủy</button>
-							<button class="btn btn-primary" id="btnSubmit" type="submit">Xác
-								nhận</button>
-						</div>
-					</div>
-					<!-- /.modal-content -->
-				</div>
-				<!-- /.modal-dialog -->
-			</div>
-		</form>
-	</div>
-
-	<div class="row col-md-10">
-		<form class="chiTietForm">
-			<div class="modal fade" id="chiTietModal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog " role="document" style="width: 60%">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h3 class="title" style="text-align: center; font-weight: bolder;">Chi tiết sản phẩm</h3>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-								<div class="card">
-									<div class="container-fliud">
-										<div class="wrapper row">
-											<div class="preview col-md-6">
-
-												<div class="preview-pic tab-content">
-													<div class="tab-pane active" id="pic-1">
-														<img style="width: 350px; height: 350px" class="hinhAnh" />
-													</div>
-												</div>
-											</div>
-											<div class="details col-md-6" style="font-size: 16px">
-												<p class="maSanPham"></p>
-												<p class="tenSanPham"></p>
-												<p class="hangSangXuat"></p>
-												<p class="cpu"></p>
-												<p class="ram"></p>
-												<p class="thietKe"></p>
-												<p class="heDieuHanh"></p>
-												<p class="manHinh"></p>
-												<p class="dungLuongPin"></p>
-												<p class="thongTinChung"></p>
-												<p class="baoHanh"></p>
-												<p class="donGia"></p>
-												<p class="donViKho"></p>
-												<p class="donViBan"></p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Đóng</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
+	
 	</div>
 
 
@@ -763,5 +673,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
 	<script src="<c:url value='/Frontend/js/jquery.simplePagination.js'/>"></script>
 	<script src="<c:url value='/js/ProductManage.js'/>"></script>
+	<script src="<c:url value='/js/nouislider.js'/>"></script>
 </body>
 </html>

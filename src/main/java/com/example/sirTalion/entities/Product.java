@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +39,7 @@ public class Product
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "laptop")
     private Laptop laptop;
 
@@ -79,6 +78,9 @@ public class Product
 
     @Column(length = 10000)
     private String embedded3DModel;
+
+    @Column(columnDefinition = "TEXT")
+    private String intro;
 
     // @OneToMany(mappedBy = "product")
     // private List<CartInfo> cartInfos;

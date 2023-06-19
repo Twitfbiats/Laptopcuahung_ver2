@@ -1,8 +1,105 @@
 $(document).ready(function() 
 {
-    displayPage(1);
-    resetPagination();
+    var item_per_page = 5
+    , total_item = 0;
+    var query = 'http://localhost:8080/api/product/get-all?'
+    var queries = [];
+
+
+    (async () => 
+    {
+        await displayPage(1);
+        resetPagination();
+    })();
     var cpus_1,displays_1,drives_1,graphicCards_1,operatingSystems_1,batteries_1;
+    addButtonSearchProduct()
+    handlePriceSlider()
+    inputAddLaptopByJsonHandler()
+    btnAddLaptopByJsonHandler()
+    someConfig()
+
+    function someConfig()
+    {
+        $('#myModal').on('show.bs.modal', function()
+        {
+            $(this).find('.modal-body').empty()
+        })
+    }
+    
+    function addButtonSearchProduct()
+    {
+        $('#btnSearchProduct').click(function()
+        {
+            queries = [];
+            query_category = $('#query_category option:selected').text();
+            query_manufacturer = $('#query_manufacturer option:selected').text();
+            query_price_min = $('.input-with-keypress-0').val().replace(' ₫', '').replace(/\./g, '')
+            query_price_max = $('.input-with-keypress-1').val().replace(' ₫', '').replace(/\./g, '')
+            query_price_sort = $('#sortByPrice option:selected').val();
+
+            query = 'http://localhost:8080/api/product/get?';
+            query += 'category=' + query_category + '&';
+            if (query_manufacturer != 'All Manufacturer' && query_manufacturer != null) query += 'manufacturer=' + query_manufacturer + '&';
+            query += 'priceMin=' + query_price_min + '&';
+            query += 'priceMax=' + query_price_max + '&';
+            query += 'priceSort=' + query_price_sort + '&';
+
+            (async () => 
+            {
+                await displayPage(1);
+                resetPagination();
+            })();
+        })
+    }
+
+    function handlePriceSlider()
+    {
+        var formatter = new Intl.NumberFormat('vi-VN', 
+        {
+            style: 'currency',
+            currency: 'VND'
+        });
+    
+        var keypressSlider = document.querySelector(".slider-keypress");
+        var input0 = document.querySelector(".input-with-keypress-0");
+        var input1 = document.querySelector(".input-with-keypress-1");
+        var inputs = [input0, input1];
+
+        noUiSlider.create(keypressSlider, {
+            start: [0, 30000000],
+            connect: true,
+            step: 1,
+            range: {
+            min: [0],
+            max: [30000000]
+            }
+        });
+
+        /* begin Inputs  */
+
+        /* end Inputs  */
+        keypressSlider.noUiSlider.on("update", function(values, handle) 
+        {
+            inputs[handle].value = formatter.format(values[handle]);  
+            inputs[handle].id = values[handle];
+        });
+        
+        $('.input-with-keypress-0').keydown(function(event)
+        {
+            if (event.keyCode == 13)
+            {	
+                keypressSlider.noUiSlider.setHandle(0, ($(this).val()).replace(' ₫', '').replace(/\./g, ''), true, true);
+            }
+        })
+        
+        $('.input-with-keypress-1').keydown(function(event)
+        {
+            if (event.keyCode == 13)
+            {	
+                keypressSlider.noUiSlider.setHandle(1, ($(this).val()).replace(' ₫', '').replace(/\./g, ''), true, true);
+            }
+        })
+    }
 
     $('#add-laptop').on('click', function()
     {
@@ -13,11 +110,22 @@ $(document).ready(function()
         addAddButtonHandler();
     });
 
+
+
     function displayPage(_page)
     {
-        fetch('http://localhost:8080/api/product/get-all?page=' + _page)
+        $('.productTable tbody').empty();
+        
+        const answer = 
+        fetch(query + 'page=' + _page)
         // Handle success
-        .then(response => response.json())  // convert to json
+        .then(response => 
+        {
+            total_item = response.headers.get("get-all-total") == null ? response.headers.get("get-filter-total") : response.headers.get("get-all-total");
+            console.log(total_item);
+
+            return response.json();
+        })  // convert to json
         .then(json => 
         {
             console.log(json);
@@ -26,24 +134,26 @@ $(document).ready(function()
             {
                 category = products[i].category.name;
                 var productRow = '<tr>' +
-                                  '<td>' + '<img src="/img/' + products[i].id + '.png" class="img-responsive" style="height: 50px; width: 50px" />'+'</td>' +
-                                  '<td>' + products[i].laptop.name + '</td>' +
-                                  '<td>' + category + '</td>' +
-                                  '<td>' + products[i].laptop.manufacturer.name + '</td>' +
-                                  '<td>' + products[i].price + '</td>' +
-                                  '<td>' + products[i].stock + '</td>' +
-                                  '<td width="0%">'+'<input type="hidden" id="productId" value=' + products[i].id + '>'+ '</td>' + 
-                                  '<td> <button class="btn btn-warning btnDetail" style="margin-right: 6px" value=' + products[i].id + '>Detail</button>' ;
+                                '<td>' + '<img src="/img/' + products[i].id + '.jpg" class="img-responsive" style="height: 50px; width: 50px" />'+'</td>' +
+                                '<td>' + products[i].laptop.name + '</td>' +
+                                '<td class="product-category">' + category + '</td>' +
+                                '<td>' + products[i].laptop.manufacturer.name + '</td>' +
+                                '<td>' + products[i].price + '</td>' +
+                                '<td>' + products[i].stock + '</td>' +
+                                //   '<td>'+'<input type="hidden" id="productId" value=' + products[i].id + '>'+ '</td>' + 
+                                '<td> <button class="btn btn-warning btnDetail" style="margin-right: 6px" value=' + products[i].id + '>Detail</button>' ;
                 
                 
                 productRow += '<button class="btn btn-primary btnUpdate" >Update</button>';
-                productRow += '  <button class="btn btn-danger btnDelete">Delete</button></td>'+'</tr>';
+                productRow += '  <button class="btn btn-danger btnDelete">Delete</button></td></tr>';
                 $('.productTable tbody').append(productRow);
             }
             addUpdateButtonHandler();
             addDetailButtonHandler();
         })    
         .catch(err => console.log('Request Failed', err)); // Catch errors
+
+        return answer;
     }
 
     function addDetailButtonHandler()
@@ -51,7 +161,16 @@ $(document).ready(function()
         $('.btnDetail').click(function(event)
         {
             var id = $(this).val();
-            window.open("http://localhost:8080/product/" + id);
+            var url;
+
+            var category = $($(this).parent().siblings('[class="product-category"]')).text();
+            console.log(category);
+            switch (category)
+            {
+                case "laptop": url = "laptop/"; break;
+            }
+
+            window.open("http://localhost:8080/" + url + id);
         });
     }
 
@@ -980,13 +1099,14 @@ $(document).ready(function()
 
     function resetPagination()
     {
+        console.log(total_item);
         $('#light-pagination').pagination({
 
             // Total number of items that will be used to calculate the pages.
-            items: 25, 
+            items: Number(total_item), 
   
             // Number of items displayed on each page.
-            itemsOnPage: 5, 
+            itemsOnPage: Number(item_per_page), 
   
             // If specified, items and itemsOnPage will not be used to calculate the number of pages.
             pages: 0, 
@@ -1037,8 +1157,75 @@ $(document).ready(function()
             nextAtFront: false,
   
             // Inverts page order
-            invertPageOrder: false
+            invertPageOrder: false,
+
+            // Callback triggered when a page is clicked
+            // Page number is given as an optional parameter
+            onPageClick: function(pageNumber, event) 
+            {
+                displayPage(pageNumber)
+            },
+              
+            onInit: function() 
+            {
+            // Callback triggered immediately after initialization
+            }
   
           });
     }
+
+    function inputAddLaptopByJsonHandler()
+    {
+        $('#product_total').keydown(function(event) 
+        {
+            if(event.keyCode == 13)
+            {
+                $('#myModal .modal-body').empty();
+                product_total = $(this).val();
+                $('#add-product-btn').val(product_total)
+                text_temp = `<div>`+
+                                `<iframe name="images-iframe" hidden></iframe>`+
+                                `<form action="http://localhost:8080/api/product/save" method="POST" enctype="multipart/form-data" target="images-iframe">`+
+                                    `<div class="row">`+
+                                        `<div class="col-md-2 col-lg-2"><label>Enter New Product</label></div>`+
+                                        `<div class="col-md-10 col-lg-10"><textarea style="width: 100%;" spellcheck="false" name="product_temp"></textarea></div>`+
+                                    `</div>`+
+                                    `<div class="row">`+
+                                        `<div class="col-md-2 col-lg-2"><label for="img">Select Images For Product: </label></div>`+
+                                        `<div class="col-md-10 col-lg-10"><input type="file" name="images" accept="image/*" multiple></div>`+
+                                    `</div>`+
+                                    `<div class="row">`+
+                                        `<div class="col-md-2 col-lg-2"><label for="img">Select 360 Images For Product: </label></div>`+
+                                        `<div class="col-md-10 col-lg-10"><input type="file" name="images360" accept="image/*" multiple></div>`+
+                                    `</div>`+
+                                `</form>`+
+                            `</div>`;
+                
+                for (var i=0;i<product_total;i++)
+                {
+                    $('#myModal .modal-body').append(text_temp)
+                }
+            }
+        })
+    }
+
+    function btnAddLaptopByJsonHandler()
+    {
+        $('#add-product-btn').click(function() 
+        {
+            $('#myModal .modal-body form').each(function(index)
+            {
+                var form_temp = $(this)
+                $.ajax(
+                {
+                    url: form_temp.attr('action'),
+                    type: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false
+                })
+            })
+        })
+    }
+    
 });

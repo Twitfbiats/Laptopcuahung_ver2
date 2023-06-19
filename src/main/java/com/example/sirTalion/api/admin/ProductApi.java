@@ -8,30 +8,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
-import javax.validation.Valid;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +50,8 @@ import com.example.sirTalion.entities.OperatingSystem;
 import com.example.sirTalion.entities.Product;
 import com.example.sirTalion.entities.Ram;
 import com.example.sirTalion.repository.ProductRepository;
+import com.example.sirTalion.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/api/product")
@@ -55,18 +60,41 @@ public class ProductApi
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductService productService;
+
     @Autowired ServletContext servletContext;
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private static final Validator validator = factory.getValidator();
+
     // @Autowired
     // private SessionFactory sessionFactory;
 
     @GetMapping("/get-all")
-    public Page<Product> getAllProduct(@RequestParam int page)
+    public ResponseEntity<Page<Product>> getAllProduct(@RequestParam int page)
     {
-        return productRepository.findAllBy(PageRequest.of(page-1, 5));
+        Page<Product> products = productRepository.findAllBy(PageRequest.of(page-1, 5));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("get-all-total", products.getTotalElements() + "");
+
+        return new ResponseEntity<>(products, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<Page<Product>> getWithFilter(@RequestParam int page,
+    @RequestParam(required = false) String category, @RequestParam(required = false) String manufacturer,
+    @RequestParam(required = false) double priceMin, @RequestParam(required = false) double priceMax,
+    @RequestParam(required = false) String priceSort)
+    {
+        Page<Product> products = productService.findProductByFilter(page-1, 5, category, manufacturer, priceMin, priceMax, priceSort);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("get-filter-total", products.getTotalElements() + "");
+
+        return new ResponseEntity<>(products, headers, HttpStatus.OK);
     }
 
     @GetMapping("/get/{id}")
@@ -75,9 +103,22 @@ public class ProductApi
         return productRepository.findById(id);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<String> saveProduct(@Valid @RequestBody Product product)
+    @PostMapping(value = "/save")
+    public ResponseEntity<String> saveProduct(@RequestPart String product_temp, 
+    @RequestPart List<MultipartFile> images, @RequestPart List<MultipartFile> images360)
     {
+        // Product product = productWrapper.getProduct();
+        // List<MultipartFile> images = productWrapper.getImages();
+        // List<MultipartFile> images360 = productWrapper.getImages360();
+        Product product = new Product();
+        try 
+        {
+            product = new ObjectMapper().readValue(product_temp, Product.class);
+            validate(product);
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
         List<Cpu> cpus = new ArrayList<>();
         product.getLaptop().getCpus().forEach(cpu -> 
         {
@@ -165,7 +206,40 @@ public class ProductApi
         }
         
         long id = productRepository.save(product).getId();
+        try 
+        {           
+            String uploadPath = servletContext.getRealPath("resources/images/");
+            File file = new File(uploadPath + "product" + id);
+            file.mkdir();
+            uploadPath = servletContext.getRealPath("resources/images/product" + id);
+            for (MultipartFile image : images)
+            {
+                Path path = Paths.get(uploadPath, image.getOriginalFilename());
+                Files.write(path, image.getBytes());
+            }    
+
+            uploadPath = servletContext.getRealPath("resources/images/");
+            file = new File(uploadPath + "product" + id + "_360");
+            file.mkdir();
+            uploadPath = servletContext.getRealPath("resources/images/product" + id + "_360");
+            for (MultipartFile image : images360)
+            {
+                Path path = Paths.get(uploadPath, image.getOriginalFilename());
+                Files.write(path, image.getBytes());
+            }
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+
         return ResponseEntity.ok("{\"ok\": \"true\", \"id\" : \"" + id + "\"}");
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteProduct(@PathVariable long id)
+    {
+        productRepository.deleteById(id);
     }
 
     @PostMapping("/upload-images/{id}")
@@ -202,5 +276,14 @@ public class ProductApi
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    <T> void validate(T t) 
+    {
+        Set<ConstraintViolation<T>> violations = validator.validate(t);
+        if (!violations.isEmpty()) 
+        {
+            throw new ConstraintViolationException(violations);
+        }
     }
 }
