@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -27,11 +28,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -103,13 +107,18 @@ public class ProductApi
         return productRepository.findById(id);
     }
 
+    @CrossOrigin(origins = "*")
+    @PutMapping("/update")
+    public ResponseEntity<String> updateProduct(@Valid @RequestBody Product product)
+    {
+        productRepository.save(product);
+        return ResponseEntity.ok("{\"ok\": \"true\"}");
+    }
+
     @PostMapping(value = "/save")
     public ResponseEntity<String> saveProduct(@RequestPart String product_temp, 
     @RequestPart List<MultipartFile> images, @RequestPart List<MultipartFile> images360)
     {
-        // Product product = productWrapper.getProduct();
-        // List<MultipartFile> images = productWrapper.getImages();
-        // List<MultipartFile> images360 = productWrapper.getImages360();
         Product product = new Product();
         try 
         {
@@ -237,9 +246,11 @@ public class ProductApi
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable long id)
+    public ResponseEntity<String> deleteProduct(@PathVariable long id)
     {
         productRepository.deleteById(id);
+
+        return ResponseEntity.ok("{\"ok\": \"true\"}");
     }
 
     @PostMapping("/upload-images/{id}")

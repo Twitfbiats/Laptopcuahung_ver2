@@ -16,6 +16,7 @@ $(document).ready(function()
     handlePriceSlider()
     inputAddLaptopByJsonHandler()
     btnAddLaptopByJsonHandler()
+
     someConfig()
 
     function someConfig()
@@ -23,6 +24,29 @@ $(document).ready(function()
         $('#myModal').on('show.bs.modal', function()
         {
             $(this).find('.modal-body').empty()
+        })
+
+        $('#update-product-btn-save').click(function()
+        {
+            data = $('#update-product-modal #update-product-input').val()
+            console.log(JSON.stringify(JSON.parse(data)))
+            fetch
+            (
+                'http://localhost:8080/api/product/update',
+                {method: "PUT", body: JSON.stringify(JSON.parse(data)), headers:new Headers({'Content-Type': 'application/json; charset=UTF-8'})}
+            )
+            .then(response => response.json())
+            .then(json => 
+            {
+                if (json.ok == `true`) 
+                {
+                    alert('Sucess')
+                    $('#update-product-modal').modal('hide')
+                    $('#btnSearchProduct').trigger('click')
+                }
+                else alert('Failed')
+            })
+            .catch(function(error){console.log(error)})
         })
     }
     
@@ -144,16 +168,47 @@ $(document).ready(function()
                                 '<td> <button class="btn btn-warning btnDetail" style="margin-right: 6px" value=' + products[i].id + '>Detail</button>' ;
                 
                 
-                productRow += '<button class="btn btn-primary btnUpdate" >Update</button>';
-                productRow += '  <button class="btn btn-danger btnDelete">Delete</button></td></tr>';
+                productRow += '<button class="btn btn-primary btnUpdate" value=' + products[i].id + '>Update</button>';
+                productRow += '  <button class="btn btn-danger btnDelete" value=' + products[i].id + '>Delete</button></td></tr>';
                 $('.productTable tbody').append(productRow);
             }
             addUpdateButtonHandler();
             addDetailButtonHandler();
+            addDeleteButtonHandler();
         })    
         .catch(err => console.log('Request Failed', err)); // Catch errors
 
         return answer;
+    }
+
+    function addDeleteButtonHandler()
+    {
+        $('.btnDelete').click(function()
+        {
+            if (confirm("Are you sure you want to delete this"))
+            {
+                id = $(this).val()
+                fetch
+                (
+                    "http://localhost:8080/api/product/delete/" + id,
+                    {method: "DELETE"}
+                )
+                .then(response => response.json())
+                .then(json => 
+                {
+                    if (json.ok == 'true')
+                    {
+                        alert('Success!!!')
+                        $('#btnSearchProduct').trigger('click')
+                    }
+                    else 
+                    {
+                        alert('Failed')
+                    }
+                })
+                .catch(function(error){console.log(error)})
+            }
+        })
     }
 
     function addDetailButtonHandler()
@@ -927,14 +982,19 @@ $(document).ready(function()
 
     function addUpdateButtonHandler()
     {
-        $('.btnUpdate').on('click', function(event) 
+        $('.btnUpdate').click(function()
         {
-            var product = {}, laptop = {};
-            laptop.name = $(".container #name").val();
-
-            product.laptop = laptop;
-            console.log(JSON.stringify(product));
-        });
+            id = $(this).val()
+            $('#update-product-modal #update-product-input').val('')
+            $('#update-product-modal').modal()
+            fetch('http://localhost:8080/api/product/get/' + id, {method: "GET"})
+            .then(response => response.json())
+            .then(json => 
+            {
+                $('#update-product-modal #update-product-input').val(JSON.stringify(json, null, 5));
+            })
+            .catch(function(error){console.log(error)})
+        })
     }
 
     function addAddButtonHandler()
@@ -1225,6 +1285,9 @@ $(document).ready(function()
                     contentType: false
                 })
             })
+            
+            $('#myModal').modal('hide')
+            $('#btnSearchProduct').trigger('click')
         })
     }
     
