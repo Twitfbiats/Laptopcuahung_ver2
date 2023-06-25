@@ -24,8 +24,8 @@ public class Role
     @Size(max = 20, message = "Role name should be less than 20 characters")
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
-    List<User> users;
+    // @ManyToMany(mappedBy = "roles")
+    // List<User> users;
 
     public Role(String roleName) {this.roleName = roleName;}
     public Role() {}

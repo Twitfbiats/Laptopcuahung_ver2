@@ -44,9 +44,15 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public User saveUser(User user) 
+    public boolean saveUser(User user) 
     {
+        if (userRepository.findByEmail(user.getEmail()) != null)
+        {
+            return false;
+        }
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setConfirmPassword(user.getPassword());
         if (user.getRoles() == null)
         {
             List<Role> roles = new ArrayList<>();
@@ -54,7 +60,8 @@ public class UserServiceImpl implements UserService
             user.setRoles(roles);
         } else user.getRoles().add(roleRepository.findByRoleName("ROLE_MEMBER"));
         
-        return userRepository.save(user);
+        userRepository.save(user);
+        return true;
     }
 
     @Override

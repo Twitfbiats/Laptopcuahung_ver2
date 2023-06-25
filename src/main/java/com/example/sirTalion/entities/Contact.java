@@ -37,7 +37,7 @@ public class Contact
     @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
     private Date responseDate;
 
-    @ManyToOne
-    @JoinColumn(name = "respondent_id")
-    private User respondentId;
+    // @ManyToOne
+    // @JoinColumn(name = "respondent_id")
+    // private User respondentId;
 }
