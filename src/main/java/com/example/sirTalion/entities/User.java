@@ -47,14 +47,14 @@ public class User
     @NotBlank(message = "User full name can't be blank")
     private String fullName;
 
-    @NotBlank(message = "User password can't be blank")
+    // @NotBlank(message = "User password can't be blank")
     private String password;
 
-    @NotBlank(message = "Confirm password can't be blank")
+    // @NotBlank(message = "Confirm password can't be blank")
     @Transient private String confirmPassword;
 
     @Size(max = 15, message = "User phone number should be less than 15 characters")
-    @NotBlank(message = "User phone number can't be blank")
+    // @NotBlank(message = "User phone number can't be blank")
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING) @Column(length = 15) private Provider provider;

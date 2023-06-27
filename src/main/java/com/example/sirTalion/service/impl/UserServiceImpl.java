@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService
     }
     
     @Override
-    public void processOauth2PostLogin(String email, String name) 
+    public void processOauth2PostLogin(String email, String name, String address) 
     {
         User user = userRepository.findByEmail(email);
         
@@ -129,6 +129,7 @@ public class UserServiceImpl implements UserService
             newUser.setFullName(name);
             newUser.setEmail(email);
             newUser.setProvider(Provider.GOOGLE);
+            newUser.setAddress(address);
             userRepository.save(newUser);
         }
     }

@@ -92,7 +92,8 @@ public class SecurityConfig
                                     });
                                     String name = customOAuth2User.getName();
                                     String email = customOAuth2User.getEmail();
-                                    userService.processOauth2PostLogin(email, name);
+                                    String address = convertLocaleCode(customOAuth2User.getAttribute("locale"));
+                                    userService.processOauth2PostLogin(email, name, address);
                                     response.sendRedirect("/home");
                                 }
                             }
@@ -101,11 +102,25 @@ public class SecurityConfig
                     .logout()
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .and()
                     .rememberMe().key("uniqueAndSecret").rememberMeParameter("remember-me")
                         .and()
                     .exceptionHandling().accessDeniedPage("/login?accessDenied");
 
         return httpSecurity.build();
+    }
+
+    public String convertLocaleCode(String locale)
+    {
+        switch(locale)
+        {
+            case "vi": return "Vietnam";
+            case "en-us": return "UnitedState";
+            case "zh": return "China";
+            case "ja": return "Japan";
+            default: return "Vietnam";
+        }
     }
 }

@@ -44,14 +44,14 @@ public class ClientController
         {
             return 
             userService.findByEmail
-                (
-                    ((CustomOAuth2User)authentication.getPrincipal()).getEmail()
-                );
+            (
+                ((CustomOAuth2User)authentication.getPrincipal()).getEmail()
+            );
         } 
-            catch (Exception e) 
-            {
-                System.out.println("Can't not cast CustomOauth2User to ?????");
-            }
+        catch (Exception e) 
+        {
+            System.out.println("Can't not cast CustomOauth2User to ?????");
+        }
         
         return null;
     }

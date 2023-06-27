@@ -31,5 +31,5 @@ public interface UserService
 
     void deleteById(long id);
 
-    void processOauth2PostLogin(String email, String name);
+    void processOauth2PostLogin(String email, String name, String address);
 }
