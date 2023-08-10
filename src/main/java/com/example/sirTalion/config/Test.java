@@ -2,11 +2,14 @@ package com.example.sirTalion.config;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.sirTalion.entities.Battery;
+import com.example.sirTalion.entities.Cart;
+import com.example.sirTalion.entities.CartInfo;
 import com.example.sirTalion.entities.Category;
 import com.example.sirTalion.entities.Cpu;
 import com.example.sirTalion.entities.Display;
@@ -23,6 +26,8 @@ import com.example.sirTalion.entities.enumerate.GraphicCardType;
 import com.example.sirTalion.entities.enumerate.PanelType;
 import com.example.sirTalion.entities.enumerate.RamType;
 import com.example.sirTalion.repository.BatteryRepository;
+import com.example.sirTalion.repository.CartInfoRepository;
+import com.example.sirTalion.repository.CartRepository;
 import com.example.sirTalion.repository.CategoryRepository;
 import com.example.sirTalion.repository.CpuRepository;
 import com.example.sirTalion.repository.DisplayRepository;
@@ -40,9 +45,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 // @Component
@@ -203,6 +210,12 @@ class Test1
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CartInfoRepository cartInfoRepository;
+
+    @Autowired
+    CartRepository cartRepository;
+
     @GetMapping("/product")
     public Product getProduct() 
     {
@@ -237,5 +250,24 @@ class Test1
     public void deleteUserTest(@PathVariable long id)
     {
         userRepository.deleteById(id);
+    }
+
+    @PostMapping("/cart/save")
+    public void saveCartInfoTest(@RequestParam long cart, @RequestParam long product)
+    {
+        // Cart cart1 = cartRepository.findById(cart).get();
+        // Product product1 = productRepository.findById(product);
+        // Cart cart1 = new Cart(cart);
+        // Product product1 = new Product();
+        // product1.setId(product);
+        CartInfo cartInfo = new CartInfo(cart, product);
+        cartInfoRepository.save(cartInfo);
+    }
+
+    @DeleteMapping("/cart-info/delete")
+    public void deleteCartInfoTest(@RequestParam long cart)
+    {
+        List<CartInfo> cartInfos = cartInfoRepository.findAllByCartId(cart);
+        cartInfoRepository.deleteAll(cartInfos);
     }
 }

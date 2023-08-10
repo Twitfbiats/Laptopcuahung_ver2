@@ -49,6 +49,7 @@ public class DummyData implements ApplicationListener<ApplicationReadyEvent>
             admin.setPassword("123456");
             admin.setFullName("Hung Vip Pro");
             admin.setPhoneNumber("123456789");
+            admin.setAddress("Ha Noi");
             List<Role> roles = new ArrayList<>();
             roles.add(roleRepository.findByRoleName("ROLE_ADMIN"));
             admin.setRoles(roles);
@@ -62,6 +63,7 @@ public class DummyData implements ApplicationListener<ApplicationReadyEvent>
             member.setPassword("123456");
             member.setFullName("Sir Talion Member");
             member.setPhoneNumber("123456789");
+            member.setAddress("Ha Noi");
             List<Role> roles = new ArrayList<>();
             member.setRoles(roles);
             userService.saveUser(member);
@@ -74,11 +76,11 @@ public class DummyData implements ApplicationListener<ApplicationReadyEvent>
             shipper.setPassword("123456");
             shipper.setFullName("Sir Talion Shipper");
             shipper.setPhoneNumber("123456789");
+            shipper.setAddress("Ha Noi");
             List<Role> roles = new ArrayList<>();
             roles.add(roleRepository.findByRoleName("ROLE_SHIPPER"));
             shipper.setRoles(roles);
             userService.saveUser(shipper);
         }
     }
-    
 }

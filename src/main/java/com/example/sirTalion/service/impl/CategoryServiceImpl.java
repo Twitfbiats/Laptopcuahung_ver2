@@ -1,5 +1,7 @@
 package com.example.sirTalion.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,5 +35,10 @@ public class CategoryServiceImpl implements CategoryService
     public void deleteById(long id) 
     {
         categoryRepository.deleteById(id);
+    }
+
+    public List<Category> findAll()
+    {
+        return categoryRepository.findAll();
     }
 }

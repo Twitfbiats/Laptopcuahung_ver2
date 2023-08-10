@@ -1,6 +1,7 @@
 package com.example.sirTalion.api.admin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -38,6 +39,12 @@ public class CategoryApi
     public Page<Category> getAllCategory(@RequestParam int page)
     {
         return categoryService.findAllBy(page, 5);
+    }
+
+    @GetMapping("/get-all-wp")
+    public List<Category> getAllCategoryWithoutPagination()
+    {
+        return categoryService.findAll();
     }
 
     @PutMapping("/update")

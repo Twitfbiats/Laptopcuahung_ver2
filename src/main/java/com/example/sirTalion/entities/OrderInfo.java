@@ -29,5 +29,5 @@ public class OrderInfo
 
     private long total;
     private int quantity;
-    private int receiveQuantity;
+    private float discount;
 }

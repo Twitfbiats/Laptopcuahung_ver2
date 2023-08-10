@@ -30,6 +30,7 @@ public class Order
     private String note;
     @Size(max = 50, message = "Order receiver name should be less than 50 characters")
     private String receiverName;
+    private String receiverEmail;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
     private Date orderDate;
@@ -40,18 +41,22 @@ public class Order
 
     @Size(max = 15, message = "Order receiver phone number should be less than 15 characters")
     private String receivePhoneNumber;
-    private long total;
+
+    private float discount;
+    private double cost;
+    private double total;
+
     @Size(max = 20, message = "Order status should be less than 20 characters")
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "purchaser_id")
-    private User purchaser;
+    // @ManyToOne
+    // @JoinColumn(name = "purchaser_id")
+    // private User purchaser;
 
     @ManyToOne
     @JoinColumn(name = "shipper_id")
     private User shipper;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderInfo> orderInfos;
+    // @OneToMany(mappedBy = "order")
+    // private List<OrderInfo> orderInfos;
 }

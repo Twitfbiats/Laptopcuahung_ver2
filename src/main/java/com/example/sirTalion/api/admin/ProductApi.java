@@ -77,6 +77,11 @@ public class ProductApi
 
     // @Autowired
     // private SessionFactory sessionFactory;
+    @GetMapping("/latest")
+    public List<Product> getLastestProductByCategory(@RequestParam String category)
+    {
+        return productService.findLatestProduct(category);
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<Page<Product>> getAllProduct(@RequestParam int page)

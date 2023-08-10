@@ -60,7 +60,7 @@ public class SecurityConfig
                     .authorizeRequests()
                         .antMatchers("/register").permitAll()
                         .antMatchers("/", "/oauth/**").permitAll()
-                        .antMatchers("/home").authenticated()
+                        .antMatchers("/home").permitAll()
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .antMatchers("/shipper/**").hasRole("SHIPPER")
                         .and()

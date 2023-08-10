@@ -1,17 +1,17 @@
-p.cart_ten {
+p.cart_name {
   color: #1374E3;
   font-weight: bold;
   font-size: 14px;
   margin-bottom: 10px;
 }
-p.cart_ten a{
+p.cart_name a{
   color: #1374E3;
 }
 
-p.cart_masanpham {
+p.cart_productcode {
   margin-bottom: 10px;
 }
-p.cart_masanpham span {
+p.cart_productcode span {
   color: red;
 }
 
@@ -26,14 +26,13 @@ input.input_num_cart {
   font-size: 14px;
 }
 
-p.cart_tongdonhang {
+p.cart_ordertotal{
   text-align: center;
   font-size: 14px;
 }
 
 
 
-}
 
 span.next_payment {
   float: right;
@@ -69,11 +68,11 @@ span.next_payment {
   text-decoration: none;
 }
 
-p.cart_tongdonhang {
+p.cart_ordertotal {
   text-align: center;
   font-size: 14px;
 }
-p.cart_tongdonhang span {
+p.cart_ordertotal span {
   color: red;
   font-weight: bold;
   font-size: 18px;

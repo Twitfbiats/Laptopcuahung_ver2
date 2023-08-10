@@ -27,11 +27,13 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product 
 {
@@ -91,6 +93,8 @@ public class Product
 
     // @OneToMany(mappedBy = "product")
     // private List<OrderInfo> orderInfos;
+
+    public Product(long id) {this.id = id;}
 }
 
 // use this for deserializing price to plain number (10E7 -> 10000000)

@@ -1,5 +1,7 @@
 package com.example.sirTalion.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.example.sirTalion.entities.Category;
@@ -10,4 +12,5 @@ public interface CategoryService
     Category findById(long id);
     void saveOrUpdate(Category category);
     void deleteById(long id);
+    List<Category> findAll();
 }
