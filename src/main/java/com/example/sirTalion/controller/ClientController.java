@@ -68,7 +68,7 @@ public class ClientController
         } 
         catch (Exception e) 
         {
-            System.out.println("Can't not cast CustomOauth2User to ?????");
+            System.out.println("Can not cast CustomOauth2User to ?????");
         }
         
         return null;
@@ -125,6 +125,7 @@ public class ClientController
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Product> products_temp = new ArrayList<>();
+        List<String> quantities = new ArrayList<>(); quantities.add(null);
         
         if (authentication.getPrincipal().toString().equals("anonymousUser"))
         {
@@ -134,6 +135,7 @@ public class ClientController
             {
                 String[] temp = products_id[i].split(":");
                 products_temp.add(productService.findById(Long.parseLong(temp[0])));
+                quantities = addToListAtIndex(quantities, Integer.parseInt(temp[0]), temp[1]);
             }
         }
         else
@@ -142,7 +144,7 @@ public class ClientController
             if (user.getCart() == null)
             {
                 Cart cart1 = new Cart();
-                cartService.save(cart1);
+                cart1 = cartService.save(cart1);
 
                 String[] products_id = cart.split("-");
             
@@ -155,6 +157,8 @@ public class ClientController
                     CartInfo cartInfo1 = new CartInfo(cart1.getId(), product1.getId());
                     cartInfo1.setQuantity(Integer.parseInt(temp[1]));
                     cartInfoRepository.save(cartInfo1);
+
+                    quantities = addToListAtIndex(quantities, Integer.parseInt(temp[0]), temp[1]);
                 }
                 user.setCart(cart1);
                 userService.updateUser(user);
@@ -181,7 +185,11 @@ public class ClientController
                 }
 
                 cartInfos = cartInfoRepository.saveAll(cartInfos);
-                for (CartInfo ci : cartInfos) products_temp.add(ci.getProduct());
+                for (CartInfo ci : cartInfos)
+                {
+                    products_temp.add(ci.getProduct());
+                    quantities = addToListAtIndex(quantities, (int)ci.getId().getProductId(), ci.getQuantity() + "");
+                }
             }
 
             Cookie deleteCart = new Cookie("cart", ""); 
@@ -191,6 +199,7 @@ public class ClientController
         
         products.addAttribute("cart", products_temp);
         products.addAttribute("checkEmpty", products_temp.size());
+        products.addAttribute("quantity", quantities);
 
         
         System.out.println("-------Important: " + authentication.getPrincipal());
@@ -202,5 +211,27 @@ public class ClientController
     public String homePage()
     {
         return "client/home";
+    }
+
+    class Custom
+    {
+        
+    }
+
+    // custom function
+    public List<String> addToListAtIndex(List<String> list, int index, String value)
+    {
+        if (list.size()-1 >= index)
+        {
+            list.add(index, value);
+            return list;
+        }
+        else
+        {
+            while (list.size()-1 < index) list.add(null);
+            list.add(index, value);
+        }
+
+        return list;
     }
 }
