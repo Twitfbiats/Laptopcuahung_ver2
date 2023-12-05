@@ -27,7 +27,5 @@ public class OrderInfo
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private long total;
     private int quantity;
-    private float discount;
 }

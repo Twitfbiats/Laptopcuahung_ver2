@@ -1,7 +1,6 @@
 package com.example.sirTalion.entities;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 import lombok.Getter;
@@ -42,7 +40,6 @@ public class Order
     @Size(max = 15, message = "Order receiver phone number should be less than 15 characters")
     private String receivePhoneNumber;
 
-    private float discount;
     private double cost;
     private double total;
 
